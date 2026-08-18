@@ -3,16 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Movie Recommendation System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #141414;
+            color: white;
+        }
+
+        header {
+            background: #000;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: #e50914;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-box input {
+            width: 400px;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 15px 25px;
+            background: #e50914;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .search-box button:hover {
+            background: #b20710;
+        }
+
+        .movies {
+            padding: 40px 50px 60px;
+        }
+
+        .movies h2 {
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+
+        .movie-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .movie-card {
+            background: #222;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .movie-card h3 {
+            font-size: 18px;
+            margin : 15px 15px 8px;
+        }
+
+        .movie-card p {
+            color: #aaa;
+            margin: 8px 15px;
+            line-height: 1.5;
+        }
+
+        .movie-card p:first-of-type {
+            font-weight: bold;
+            color: #fff;
+        }
+
+    </style>
 </head>
 
 <body>
 
-    <h1>🎬 Movie Recommendation System</h1>
+    <header>
+        <h1>🎬 MovieRec</h1>
+        <span>Movie Recommendation System</span>
+    </header>
 
-    <p>Welcome to our Movie Recommendation System.</p>
+    <section class="hero">
 
-    <p>Our website is under development.</p>
+        <h2>Find Your Next Favourite Movie 🍿</h2>
+
+        <p>
+            Search for a movie and get recommendations based on your interests.
+        </p>
+
+        <form method="POST" class="search-box">
+            <input 
+                type="text"
+                name="movie_title"
+                placeholder="Enter a movie name..."
+                value="{{ movie_title }}"
+                required
+            >
+            <button type="submit">
+                Search
+            </button>
+        </form>
+
+    </section>
+
+    <section class="movies">
+
+        <h2>🎥 Recommended Movies</h2>
+
+        <div class="movie-container" id="movieContainer">
+
+            {% if recommendations %}
+                {% for movie in recommendations %}
+                    <div class="movie-card">
+                        {% if movie.poster %}
+                            <img src="{{ movie.poster }}" alt="{{ movie.title }}">
+                        {% endif %}
+                        <h3>{{ movie.title }}</h3>
+                        <p>⭐ {{ "%.1f"|format(movie.rating) }}</p>
+                        <p>{{ movie.overview }}</p>
+                    </div>
+                {% endfor %}
+            {% elif movie_title %}
+                <p>No recommendation found.</p>
+            {% else %}
+                <p>Search for a movie to get recommendations.</p>
+            {% endif %}
+        </div>
+
+    </section>
 
 </body>
 </html>
