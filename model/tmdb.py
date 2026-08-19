@@ -19,7 +19,15 @@ def get_movie_details(movie_title):
         "query": movie_title
     }
 
-    response = requests.get(url, params=params)
+    try:
+        response = requests.get(
+            url,
+            params=params,
+            timeout=10
+        )
+    except requests.exceptions.RequestException as e:
+        print("TMDB API Error:", e)
+        return None
 
     if response.status_code != 200:
         return None
@@ -34,6 +42,7 @@ def get_movie_details(movie_title):
     return {
         "title": movie.get("title"),
         "rating": movie.get("vote_average", 0),
+        "release_date": movie.get("release_date", ""),
         "overview": movie.get("overview", ""),
         "poster": (
             IMAGE_URL + movie["poster_path"]

@@ -91,15 +91,17 @@
         }
 
         .movie-card {
-            background: #222;
+            background: #1f1f1f;
             border-radius: 12px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #333;
         }
 
         .movie-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+            border-color: #e50914;
         }
 
         .movie-card img {
@@ -120,9 +122,88 @@
             line-height: 1.5;
         }
 
+        .movie-card p:last-child {
+            height: 90px;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
         .movie-card p:first-of-type {
             font-weight: bold;
             color: #fff;
+        }
+
+        .movie-info {
+            font-size: 14px;
+            color: #f5c518 !important;
+            font-weight: bold;
+        }
+
+        .movie-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .movie-modal-content {
+            background: #1f1f1f;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            border: 1px solid #333;
+        }
+
+        .movie-modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #modalPoster {
+            width: 180px;
+            max-height: 270px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .movie-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .movie-modal-close:hover {
+            color: #e50914;
+        }
+
+        .movie-modal-content h2 {
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .movie-modal-content p {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .modal-rating {
+            color: #f5c518 !important;
+            font-weight: bold;
         }
 
     </style>
@@ -166,12 +247,23 @@
 
             {% if recommendations %}
                 {% for movie in recommendations %}
-                    <div class="movie-card">
+                    <div class="movie-card"
+                          data-title="{{ movie.title }}"
+                          data-rating="{{ movie.rating }}"
+                          data-release="{{ movie.release_date[:4] if movie.release_date else '' }}"
+                          data-overview="{{ movie.overview }}"
+                          data-poster="{{ movie.poster }}">
                         {% if movie.poster %}
                             <img src="{{ movie.poster }}" alt="{{ movie.title }}">
                         {% endif %}
                         <h3>{{ movie.title }}</h3>
-                        <p>⭐ {{ "%.1f"|format(movie.rating) }}</p>
+                        <p class="movie-info">
+                            ⭐ {{ "%.1f"|format(movie.rating) }}
+                            {% if movie.release_date %}
+                                • {{ movie.release_date[:4] }}
+                            {% endif %}
+                        </p>
+
                         <p>{{ movie.overview }}</p>
                     </div>
                 {% endfor %}
@@ -183,6 +275,57 @@
         </div>
 
     </section>
+
+    <div class="movie-modal" id="movieModal">
+        <div class="movie-modal-content">
+            <span class="movie-modal-close" id="closeModal">&times;</span>
+            <img id="modalPoster" src="" alt="Movie Poster">
+            <h2 id="modalTitle"></h2>
+            <p class="modal-rating" id="modalRating"></p>
+            <p id="modalRelease"></p>
+            <p id="modalOverview"></p>
+        </div>
+    </div>
+
+    <script>
+        const movieCards = document.querySelectorAll(".movie-card");
+        const movieModal = document.getElementById("movieModal");
+        const closeModal = document.getElementById("closeModal");
+
+        movieCards.forEach(card => {
+            card.addEventListener("click", () => {
+
+                document.getElementById("modalPoster").src =
+                    card.dataset.poster;
+                
+                document.getElementById("modalTitle").textContent =
+                    card.dataset.title;
+
+                document.getElementById("modalRating").textContent =
+                    "⭐ " + Number(card.dataset.rating).toFixed(1);
+
+                document.getElementById("modalRelease").textContent =
+                    card.dataset.release
+                        ? "📅 " + card.dataset.release
+                        : "";
+
+                document.getElementById("modalOverview").textContent =
+                    card.dataset.overview || "No overview available.";
+
+                movieModal.style.display = "flex";
+            });
+        });
+
+        closeModal.addEventListener("click", () => {
+            movieModal.style.display = "none";
+        });
+
+        movieModal.addEventListener("click", (event) => {
+            if (event.target === movieModal) {
+                movieModal.style.display = "none";
+            }
+        });
+    </script>
 
 </body>
 </html>

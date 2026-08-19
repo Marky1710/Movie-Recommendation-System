@@ -151,8 +151,9 @@ similarity = cosine_similarity(tfidf_matrix)
 
 def recommend(movie_title):
 
+    movie_title = movie_title.strip().lower()
     movie_matches = movies[
-        movies["title"].str.lower() == movie_title.lower()
+        movies["title"].str.lower().str.strip() == movie_title
     ]
 
     if movie_matches.empty:
