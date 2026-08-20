@@ -21,9 +21,6 @@ def home():
 
             movie_names = recommend(movie_title)
 
-            print("Movie:", movie_title)
-            print("Recommended movie names:", movie_names)
-
             for movie in movie_names:
 
                 details = get_movie_details(movie)
@@ -31,7 +28,8 @@ def home():
                 if details:
                     recommendations.append(details)
 
-            print("Movie details:", recommendations)
+                if len(recommendations) == 10:
+                    break
 
     return render_template(
         "index.html",

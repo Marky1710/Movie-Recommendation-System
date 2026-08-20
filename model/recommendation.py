@@ -161,9 +161,7 @@ def recommend(movie_title):
 
     movie_index = movie_matches.index[0]
 
-    similarity_scores = list(
-        enumerate(similarity[movie_index])
-    )
+    similarity_scores = list(enumerate(similarity[movie_index]))
 
     similarity_scores = sorted(
         similarity_scores,
@@ -173,7 +171,7 @@ def recommend(movie_title):
 
     recommendations = []
 
-    for i, score in similarity_scores[1:11]:
+    for i, score in similarity_scores[1:21]:
 
         recommendations.append(
             movies.iloc[i]["title"]

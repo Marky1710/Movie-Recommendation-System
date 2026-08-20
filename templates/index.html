@@ -96,6 +96,9 @@
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
         }
 
         .movie-card:hover {
@@ -109,6 +112,7 @@
             height: 320px;
             object-fit: cover;
             display: block;
+            background: #111;
         }
 
         .movie-card h3 {
@@ -126,6 +130,8 @@
             height: 90px;
             overflow: hidden;
             font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
         }
 
         .movie-card p:first-of-type {
@@ -206,6 +212,23 @@
             font-weight: bold;
         }
 
+        .details-btn {
+            margin: auto 15px 15px;
+            padding: 10px;
+            background: #e50914;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .details-btn:hover {
+            background: #b20710;
+        }
+
     </style>
 </head>
 
@@ -265,6 +288,10 @@
                         </p>
 
                         <p>{{ movie.overview }}</p>
+
+                        <button class="details-btn">
+                            View Details
+                        </button>
                     </div>
                 {% endfor %}
             {% elif movie_title %}
@@ -293,11 +320,16 @@
         const closeModal = document.getElementById("closeModal");
 
         movieCards.forEach(card => {
-            card.addEventListener("click", () => {
+
+            const detailsButton = card.querySelector(".details-btn");
+
+            detailsButton.addEventListener("click", (event) => {
+
+                event.stopPropagation();
 
                 document.getElementById("modalPoster").src =
                     card.dataset.poster;
-                
+
                 document.getElementById("modalTitle").textContent =
                     card.dataset.title;
 
@@ -321,9 +353,11 @@
         });
 
         movieModal.addEventListener("click", (event) => {
+
             if (event.target === movieModal) {
                 movieModal.style.display = "none";
             }
+
         });
     </script>
 
