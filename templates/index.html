@@ -98,7 +98,7 @@
             border: 1px solid #333;
             display: flex;
             flex-direction: column;
-            min-height: 500px;
+            min-height: 0;
         }
 
         .movie-card:hover {
@@ -127,11 +127,7 @@
         }
 
         .movie-card p:last-child {
-            height: 90px;
-            overflow: hidden;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 15px;
+            display: None;
         }
 
         .movie-card p:first-of-type {
@@ -175,12 +171,13 @@
         }
 
         #modalPoster {
-            width: 180px;
-            max-height: 270px;
+            width: 200px;
+            height: 300px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 10px;
             display: block;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
         }
 
         .movie-modal-close {
@@ -197,19 +194,35 @@
         }
 
         .movie-modal-content h2 {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: white;
+            font-size: 28px;
+            text-align: center;
         }
 
         .movie-modal-content p {
             color: #aaa;
-            line-height: 1.6;
-            margin-bottom: 12px;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+
+        #modalRelease {
+            text-align: center;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        #modalOverview {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
         }
 
         .modal-rating {
             color: #f5c518 !important;
             font-weight: bold;
+            text-align: center;
+            font-size: 16px;
         }
 
         .details-btn {
@@ -223,10 +236,103 @@
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s ease;
+            box-shadow: 0 4px 10px rgba(229, 9, 20, 0.3);
         }
 
         .details-btn:hover {
             background: #b20710;
+        }
+        
+        @media (max-width: 768px) {
+
+            header {
+                padding: 18px 20px;
+            }   
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            header span {
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 55px 20px;
+            }
+
+            .hero h2 {
+                font-size: 30px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .search-box {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-box input {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .search-box button {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .movies {
+                padding: 30px 20px 50px;
+            }
+
+            .movie-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .movie-card img {
+                height: 260px;
+            }
+
+            .movie-card h3 {
+                font-size: 16px;
+            }
+
+            .movie-modal-content {
+                width: 95%;
+                padding: 25px 20px;
+            }
+
+            #modalPoster {
+                width: 160px;
+                height: 240px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            header {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+            .hero h2 {
+                font-size: 26px;
+            }
+
+            .movie-container {
+                grid-template-columns: 1fr;
+            }
+
+            .movie-card img {
+                height: 350px;
+            }
+
         }
 
     </style>
