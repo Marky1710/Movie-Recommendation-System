@@ -335,6 +335,29 @@
 
         }
 
+        .no-results {
+            text-align: center;
+            width: 100%;
+            padding: 50px 20px;
+            background: #1f1f1f;
+            border: 1px solid #333;
+            border-radius: 12px;
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .no-results p {
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        .no-results strong {
+            color: white;
+        }
+
     </style>
 </head>
 
@@ -370,7 +393,11 @@
 
     <section class="movies">
 
-        <h2>🎥 Recommended Movies</h2>
+        {% if movie_title %}
+            <h2>🎬 Movies Recommended For "{{ movie_title }}"</h2>
+        {% else %}
+            <h2>🎥 Recommended Movies</h2>
+        {% endif %}
 
         <div class="movie-container" id="movieContainer">
 
@@ -400,8 +427,18 @@
                         </button>
                     </div>
                 {% endfor %}
+
             {% elif movie_title %}
-                <p>No recommendation found.</p>
+                <div class="no-results">
+                    <h3>😕 No Recommendations Found</h3>
+                    <p>
+                        We couldn't find recommendations for
+                        <strong>"{{ movie_title }}"</strong>.
+                    </p>
+                    <p>
+                        Try searching with a different movie title.
+                    </p>
+                </div>
             {% else %}
                 <p>Search for a movie to get recommendations.</p>
             {% endif %}
