@@ -111,9 +111,9 @@ def create_tags(row):
     return (
         row["overview"]
         + " "
-        + " ".join(row["genres"])
+        + " ".join(row["genres"]) * 2
         + " "
-        + " ".join(row["keywords"])
+        + " ".join(row["keywords"]) * 2
         + " "
         + " ".join(row["cast"])
         + " "
@@ -172,6 +172,9 @@ def recommend(movie_title):
     recommendations = []
 
     for i, score in similarity_scores[1:21]:
+
+        if score < 0.05:
+            continue
 
         recommendations.append(
             movies.iloc[i]["title"]

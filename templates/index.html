@@ -382,7 +382,6 @@
                 name="movie_title"
                 placeholder="Enter a movie name..."
                 value="{{ movie_title }}"
-                required
             >
             <button type="submit">
                 Search
@@ -402,19 +401,25 @@
         <div class="movie-container" id="movieContainer">
 
             {% if recommendations %}
+
                 {% for movie in recommendations %}
+
                     <div class="movie-card"
-                          data-title="{{ movie.title }}"
-                          data-rating="{{ movie.rating }}"
-                          data-release="{{ movie.release_date[:4] if movie.release_date else '' }}"
-                          data-overview="{{ movie.overview }}"
-                          data-poster="{{ movie.poster }}">
+                        data-title="{{ movie.title }}"
+                        data-rating="{{ movie.rating }}"
+                        data-release="{{ movie.release_date[:4] if movie.release_date else '' }}"
+                        data-overview="{{ movie.overview }}"
+                        data-poster="{{ movie.poster }}">
+
                         {% if movie.poster %}
                             <img src="{{ movie.poster }}" alt="{{ movie.title }}">
                         {% endif %}
+
                         <h3>{{ movie.title }}</h3>
+
                         <p class="movie-info">
                             ⭐ {{ "%.1f"|format(movie.rating) }}
+
                             {% if movie.release_date %}
                                 • {{ movie.release_date[:4] }}
                             {% endif %}
@@ -425,23 +430,42 @@
                         <button class="details-btn">
                             View Details
                         </button>
+
                     </div>
+
                 {% endfor %}
 
             {% elif movie_title %}
+
                 <div class="no-results">
+
                     <h3>😕 No Recommendations Found</h3>
+
                     <p>
                         We couldn't find recommendations for
                         <strong>"{{ movie_title }}"</strong>.
                     </p>
+
                     <p>
                         Try searching with a different movie title.
                     </p>
+
                 </div>
+
             {% else %}
-                <p>Search for a movie to get recommendations.</p>
+
+                <div class="no-results">
+
+                    <h3>🎬 Ready to Discover?</h3>
+
+                    <p>
+                        Search for your favourite movie and we'll find similar movies for you.
+                    </p>
+
+                </div>
+
             {% endif %}
+
         </div>
 
     </section>
@@ -502,6 +526,29 @@
             }
 
         });
+
+        const searchForm = document.querySelector(".search-box");
+        const searchButton = searchForm.querySelector("button");
+
+        searchForm.addEventListener("submit", (event) => {
+            const input = searchForm.querySelector("input");
+
+            if (!input.value.trim()) {
+                event.preventDefault();
+
+                input.value = "";
+                input.placeholder = "Please enter a movie name...";
+                input.focus();
+
+                return;
+            }
+
+            searchButton.textContent = "Searching...";
+            searchButton.disabled = true;
+            searchButton.style.opacity = "0.7";
+            searchButton.style.cursor = "not-allowed";
+        });
+
     </script>
 
 </body>
