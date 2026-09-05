@@ -29,13 +29,19 @@ def get_movie_details(movie_title):
         "query": movie_title
     }
 
-    for attempt in range(3):
+    headers = {
+        "User-Agent": "Movie-Recommendation-System/1.0"
+    }
+
+    # Maximum 2 attempts
+    for attempt in range(2):
 
         try:
             response = requests.get(
                 url,
                 params=params,
-                timeout=10
+                headers=headers,
+                timeout=5
             )
 
             if response.status_code == 200:
@@ -75,17 +81,20 @@ def get_movie_details(movie_title):
 
             print(
                 f"TMDB request failed for {movie_title} "
-                f"(Attempt {attempt + 1}/3)"
+                f"(Attempt {attempt + 1}/2)"
             )
 
         except requests.exceptions.RequestException as e:
 
             print(
                 f"TMDB API Error for {movie_title} "
-                f"(Attempt {attempt + 1}/3): {e}"
+                f"(Attempt {attempt + 1}/2): {e}"
             )
 
-        if attempt < 2:
-            time.sleep(2 ** attempt)
+        # Wait only 0.5 second before retry
+        if attempt == 0:
+            time.sleep(0.5)
+
+    print(f"TMDB failed: {movie_title}")
 
     return None
